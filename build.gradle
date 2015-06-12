@@ -41,7 +41,7 @@ buildscript {
 
 ext {
     expectedGradleVersion = '1.9'
-    hibernateTargetVersion = '4.3.10.Final'
+    hibernateTargetVersion = '4.3.10.cos-fork.1-SNAPSHOT'
     javaLanguageLevel = '1.6'
 
     osgiExportVersion = hibernateTargetVersion.replaceAll( "-SNAPSHOT", ".SNAPSHOT" )
@@ -386,9 +386,9 @@ subprojects { subProject ->
 							url 'https://hibernate.atlassian.net/browse/HHH'
 						}
 						scm {
-							url 'http://github.com/hibernate/hibernate-orm'
-							connection 'scm:git:http://github.com/hibernate/hibernate-orm.git'
-							developerConnection 'scm:git:git@github.com:hibernate/hibernate-orm.git'
+							url 'https://github.com/reda-alaoui/hibernate-orm'
+							connection 'scm:git:https://github.com/reda-alaoui/hibernate-orm.git'
+							developerConnection 'scm:git:git@github.com:reda-alaoui/hibernate-orm.git'
 						}
 						licenses {
 							license {
@@ -420,12 +420,12 @@ subprojects { subProject ->
 		repositories {
 			maven {
 				if ( subProject.version.endsWith( 'SNAPSHOT' ) ) {
-					name 'jboss-snapshots-repository'
-					url 'https://repository.jboss.org/nexus/content/repositories/snapshots'
+					name 'cosium-repo-snapshots'
+					url 'http://repo.cosium.com/repository/snapshots/'
 				}
 				else {
-					name 'jboss-releases-repository'
-					url 'https://repository.jboss.org/nexus/service/local/staging/deploy/maven2/'
+					name 'cosium-repo'
+					url 'http://repo.cosium.com/repository/internal/'
 				}
 			}
 		}
