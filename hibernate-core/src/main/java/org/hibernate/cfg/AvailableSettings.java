@@ -711,4 +711,10 @@ public interface AvailableSettings {
 
 	String AUTO_SESSION_EVENTS_LISTENER = "hibernate.session.events.auto";
 
+	/**
+	 * Specifies wheter to raise a runtime exception when the provided first result / max results attributes are ignored.
+	 * i.e: In case of a specified first result / max results with collection fetch.
+	 * Disabled by default. Set to true to enable.
+	 */
+	String RAISE_EXCEPTION_ON_IGNORED_FIRST_RESULT_MAX_RESULTS = "hibernate.query.raise_exception_on_ignored_first_result_max_results";
 }
