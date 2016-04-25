@@ -1008,7 +1008,7 @@ public class EntityManagerFactoryBuilderImpl implements EntityManagerFactoryBuil
 		settings.setTransactionType( txnType );
 		boolean hasTxStrategy = configurationValues.containsKey( Environment.TRANSACTION_STRATEGY );
 		if ( hasTxStrategy ) {
-			LOG.overridingTransactionStrategyDangerous( Environment.TRANSACTION_STRATEGY );
+			LOG.overridingTransactionStrategyDangerous(Environment.TRANSACTION_STRATEGY);
 		}
 		else {
 			if ( txnType == PersistenceUnitTransactionType.JTA ) {
@@ -1035,10 +1035,14 @@ public class EntityManagerFactoryBuilderImpl implements EntityManagerFactoryBuil
 		return serviceRegistryBuilder.build();
 	}
 
+	protected Configuration createConfiguration(){
+		return new Configuration();
+	}
+
 	public Configuration buildHibernateConfiguration(ServiceRegistry serviceRegistry) {
 		Properties props = new Properties();
 		props.putAll( configurationValues );
-		Configuration cfg = new Configuration();
+		Configuration cfg = createConfiguration();
 		cfg.getProperties().putAll( props );
 
 		cfg.setEntityNotFoundDelegate( jpaEntityNotFoundDelegate );

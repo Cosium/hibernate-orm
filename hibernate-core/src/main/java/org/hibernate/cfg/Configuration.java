@@ -656,7 +656,7 @@ public class Configuration implements Serializable {
 	public Configuration addXML(String xml) throws MappingException {
 		LOG.debugf( "Mapping XML:\n%s", xml );
 		final InputSource inputSource = new InputSource( new StringReader( xml ) );
-		add( inputSource, "string", "XML String" );
+		add(inputSource, "string", "XML String");
 		return this;
 	}
 
@@ -738,7 +738,7 @@ public class Configuration implements Serializable {
 	 */
 	public Configuration addResource(String resourceName, ClassLoader classLoader) throws MappingException {
 		LOG.readingMappingsFromResource( resourceName );
-		InputStream resourceInputStream = classLoader.getResourceAsStream( resourceName );
+		InputStream resourceInputStream = classLoader.getResourceAsStream(resourceName);
 		if ( resourceInputStream == null ) {
 			throw new MappingNotFoundException( "resource", resourceName );
 		}
@@ -768,7 +768,7 @@ public class Configuration implements Serializable {
 		if ( resourceInputStream == null ) {
 			throw new MappingNotFoundException( "resource", resourceName );
 		}
-		add( resourceInputStream, "resource", resourceName );
+		add(resourceInputStream, "resource", resourceName);
 		return this;
 	}
 
@@ -784,7 +784,7 @@ public class Configuration implements Serializable {
 	 */
 	public Configuration addClass(Class persistentClass) throws MappingException {
 		String mappingResourceName = persistentClass.getName().replace( '.', '/' ) + ".hbm.xml";
-		LOG.readingMappingsFromResource( mappingResourceName );
+		LOG.readingMappingsFromResource(mappingResourceName);
 		return addResource( mappingResourceName, persistentClass.getClassLoader() );
 	}
 
@@ -798,7 +798,7 @@ public class Configuration implements Serializable {
 	@SuppressWarnings({ "unchecked" })
 	public Configuration addAnnotatedClass(Class annotatedClass) {
 		XClass xClass = reflectionManager.toXClass( annotatedClass );
-		metadataSourceQueue.add( xClass );
+		metadataSourceQueue.add(xClass);
 		return this;
 	}
 
@@ -812,7 +812,7 @@ public class Configuration implements Serializable {
 	 * @throws MappingException in case there is an error in the mapping data
 	 */
 	public Configuration addPackage(String packageName) throws MappingException {
-		LOG.debugf( "Mapping Package %s", packageName );
+		LOG.debugf("Mapping Package %s", packageName);
 		try {
 			AnnotationBinder.bindPackage( packageName, createMappings() );
 			return this;
@@ -919,7 +919,7 @@ public class Configuration implements Serializable {
 
 		TreeMap generators = new TreeMap();
 		String defaultCatalog = properties.getProperty( Environment.DEFAULT_CATALOG );
-		String defaultSchema = properties.getProperty( Environment.DEFAULT_SCHEMA );
+		String defaultSchema = properties.getProperty(Environment.DEFAULT_SCHEMA);
 
 		for ( PersistentClass pc : classes.values() ) {
 			if ( !pc.isInherited() ) {
@@ -1040,7 +1040,7 @@ public class Configuration implements Serializable {
 
 		itr = iterateGenerators( dialect );
 		while ( itr.hasNext() ) {
-			String[] lines = ( (PersistentIdentifierGenerator) itr.next() ).sqlDropStrings( dialect );
+			String[] lines = ( (PersistentIdentifierGenerator) itr.next() ).sqlDropStrings(dialect);
 			script.addAll( Arrays.asList( lines ) );
 		}
 
@@ -1189,8 +1189,8 @@ public class Configuration implements Serializable {
 
 		String defaultCatalog = properties.getProperty( Environment.DEFAULT_CATALOG );
 		String defaultSchema = properties.getProperty( Environment.DEFAULT_SCHEMA );
-		UniqueConstraintSchemaUpdateStrategy constraintMethod = UniqueConstraintSchemaUpdateStrategy.interpret( properties
-				.get( Environment.UNIQUE_CONSTRAINT_SCHEMA_UPDATE_STRATEGY ) );
+		UniqueConstraintSchemaUpdateStrategy constraintMethod = UniqueConstraintSchemaUpdateStrategy.interpret(properties
+				.get(Environment.UNIQUE_CONSTRAINT_SCHEMA_UPDATE_STRATEGY));
 
 		List<SchemaUpdateScript> scripts = new ArrayList<SchemaUpdateScript>();
 
@@ -1341,7 +1341,7 @@ public class Configuration implements Serializable {
 			}
 		}
 
-		iter = iterateGenerators( dialect );
+		iter = iterateGenerators(dialect);
 		while ( iter.hasNext() ) {
 			PersistentIdentifierGenerator generator = (PersistentIdentifierGenerator) iter.next();
 			Object key = generator.generatorKey();
@@ -1641,7 +1641,7 @@ public class Configuration implements Serializable {
 		if ( StringHelper.isEmpty( keyName ) ) {
 			keyName = Constraint.generateName( "UK_", table, columns );
 		}
-		keyName = normalizer.normalizeIdentifierQuoting( keyName );
+		keyName = normalizer.normalizeIdentifierQuoting(keyName);
 		
 		if ( unique ) {
 			UniqueKey uk = table.getOrCreateUniqueKey( keyName );
@@ -1850,7 +1850,7 @@ public class Configuration implements Serializable {
 
 		validate();
 
-		Environment.verifyProperties( properties );
+		Environment.verifyProperties(properties);
 		Properties copy = new Properties();
 		copy.putAll( properties );
 		ConfigurationHelper.resolvePlaceHolders( copy );
@@ -1885,10 +1885,10 @@ public class Configuration implements Serializable {
 
 		// add Dialect contributed types
 		final Dialect dialect = serviceRegistry.getService( JdbcServices.class ).getDialect();
-		dialect.contributeTypes( typeContributions, serviceRegistry );
+		dialect.contributeTypes(typeContributions, serviceRegistry);
 
 		// add TypeContributor contributed types.
-		ClassLoaderService classLoaderService = serviceRegistry.getService( ClassLoaderService.class );
+		ClassLoaderService classLoaderService = serviceRegistry.getService(ClassLoaderService.class);
 		for ( TypeContributor contributor : classLoaderService.loadJavaServices( TypeContributor.class ) ) {
 			contributor.contribute( typeContributions, serviceRegistry );
 		}
@@ -2024,7 +2024,7 @@ public class Configuration implements Serializable {
 	 * @return this for method chaining
 	 */
 	public Configuration setProperty(String propertyName, String value) {
-		properties.setProperty( propertyName, value );
+		properties.setProperty(propertyName, value);
 		return this;
 	}
 
@@ -2040,7 +2040,7 @@ public class Configuration implements Serializable {
 				properties.setProperty( "hibernate." + name, value );
 			}
 		}
-		Environment.verifyProperties( properties );
+		Environment.verifyProperties(properties);
 	}
 
 	/**
@@ -2053,7 +2053,7 @@ public class Configuration implements Serializable {
 	 * @see #configure(String)
 	 */
 	public Configuration configure() throws HibernateException {
-		configure( "/hibernate.cfg.xml" );
+		configure("/hibernate.cfg.xml");
 		return this;
 	}
 
@@ -2072,9 +2072,9 @@ public class Configuration implements Serializable {
 	 * @see #doConfigure(java.io.InputStream, String)
 	 */
 	public Configuration configure(String resource) throws HibernateException {
-		LOG.configuringFromResource( resource );
+		LOG.configuringFromResource(resource);
 		InputStream stream = getConfigurationInputStream( resource );
-		return doConfigure( stream, resource );
+		return doConfigure(stream, resource);
 	}
 
 	/**
@@ -2091,7 +2091,7 @@ public class Configuration implements Serializable {
 	 * @throws HibernateException Generally indicates we cannot find the named resource
 	 */
 	protected InputStream getConfigurationInputStream(String resource) throws HibernateException {
-		LOG.configurationResource( resource );
+		LOG.configurationResource(resource);
 		return ConfigHelper.getResourceAsStream( resource );
 	}
 
@@ -2108,7 +2108,7 @@ public class Configuration implements Serializable {
 	 * @see #doConfigure(java.io.InputStream, String)
 	 */
 	public Configuration configure(URL url) throws HibernateException {
-		LOG.configuringFromUrl( url );
+		LOG.configuringFromUrl(url);
 		try {
 			return doConfigure( url.openStream(), url.toString() );
 		}
@@ -2200,7 +2200,7 @@ public class Configuration implements Serializable {
 	 * @throws HibernateException Indicates a problem performing the configuration task
 	 */
 	protected Configuration doConfigure(Document doc) throws HibernateException {
-		Element sfNode = doc.getRootElement().element( "session-factory" );
+		Element sfNode = doc.getRootElement().element("session-factory");
 		String name = sfNode.attributeValue( "name" );
 		if ( name != null ) {
 			properties.setProperty( Environment.SESSION_FACTORY_NAME, name );
@@ -2245,11 +2245,11 @@ public class Configuration implements Serializable {
 	}
 
 	private void parseMappingElement(Element mappingElement, String name) {
-		final Attribute resourceAttribute = mappingElement.attribute( "resource" );
-		final Attribute fileAttribute = mappingElement.attribute( "file" );
+		final Attribute resourceAttribute = mappingElement.attribute("resource");
+		final Attribute fileAttribute = mappingElement.attribute("file");
 		final Attribute jarAttribute = mappingElement.attribute( "jar" );
 		final Attribute packageAttribute = mappingElement.attribute( "package" );
-		final Attribute classAttribute = mappingElement.attribute( "class" );
+		final Attribute classAttribute = mappingElement.attribute("class");
 
 		if ( resourceAttribute != null ) {
 			final String resourceName = resourceAttribute.getValue();
@@ -2368,7 +2368,7 @@ public class Configuration implements Serializable {
 			String concurrencyStrategy,
 			String region,
 			boolean cacheLazyProperty) throws MappingException {
-		caches.add( new CacheHolder( entityName, concurrencyStrategy, region, true, cacheLazyProperty ) );
+		caches.add(new CacheHolder(entityName, concurrencyStrategy, region, true, cacheLazyProperty));
 	}
 
 	private void applyCacheConcurrencyStrategy(CacheHolder holder) {
@@ -2378,7 +2378,7 @@ public class Configuration implements Serializable {
 		}
 		rootClass.setCacheConcurrencyStrategy( holder.usage );
 		rootClass.setCacheRegionName( holder.region );
-		rootClass.setLazyPropertiesCacheable( holder.cacheLazy );
+		rootClass.setLazyPropertiesCacheable(holder.cacheLazy);
 	}
 
 	/**
@@ -2390,7 +2390,7 @@ public class Configuration implements Serializable {
 	 * @return this for method chaining
 	 */
 	public Configuration setCollectionCacheConcurrencyStrategy(String collectionRole, String concurrencyStrategy) {
-		setCollectionCacheConcurrencyStrategy( collectionRole, concurrencyStrategy, collectionRole );
+		setCollectionCacheConcurrencyStrategy(collectionRole, concurrencyStrategy, collectionRole);
 		return this;
 	}
 
@@ -2402,7 +2402,7 @@ public class Configuration implements Serializable {
 	 * @param region The name of the cache region to use
 	 */
 	public void setCollectionCacheConcurrencyStrategy(String collectionRole, String concurrencyStrategy, String region) {
-		caches.add( new CacheHolder( collectionRole, concurrencyStrategy, region, false, false ) );
+		caches.add(new CacheHolder(collectionRole, concurrencyStrategy, region, false, false));
 	}
 
 	private void applyCollectionCacheConcurrencyStrategy(CacheHolder holder) {
@@ -2411,7 +2411,7 @@ public class Configuration implements Serializable {
 			throw new MappingException( "Cannot cache an unknown collection: " + holder.role );
 		}
 		collection.setCacheConcurrencyStrategy( holder.usage );
-		collection.setCacheRegionName( holder.region );
+		collection.setCacheRegionName(holder.region);
 	}
 
 	/**
@@ -2576,8 +2576,12 @@ public class Configuration implements Serializable {
 	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
 		//We write MetadataProvider first as we need  reflectionManager before reading the other components
 		final MetadataProvider metadataProvider = ( ( MetadataProviderInjector ) reflectionManager ).getMetadataProvider();
-		out.writeObject( metadataProvider );
+		out.writeObject(metadataProvider);
 		out.defaultWriteObject();
+	}
+
+	protected ReflectionManager newReflectionManager(){
+		return new JavaReflectionManager();
 	}
 
 	private void createReflectionManager() {
@@ -2585,7 +2589,7 @@ public class Configuration implements Serializable {
 	}
 
 	private void createReflectionManager(MetadataProvider metadataProvider) {
-		reflectionManager = new JavaReflectionManager();
+		reflectionManager = newReflectionManager();
 		( ( MetadataProviderInjector ) reflectionManager ).setMetadataProvider( metadataProvider );
 	}
 
