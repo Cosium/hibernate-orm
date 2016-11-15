@@ -421,11 +421,11 @@ subprojects { subProject ->
 			maven {
 				if ( subProject.version.endsWith( 'SNAPSHOT' ) ) {
 					name 'cosium-repo-snapshots'
-					url 'http://repo.cosium.com/repository/snapshots/'
+					url 'https://repo.cosium.com/repository/snapshots/'
 				}
 				else {
 					name 'cosium-repo'
-					url 'http://repo.cosium.com/repository/internal/'
+					url 'https://repo.cosium.com/repository/internal/'
 				}
 			}
 		}
