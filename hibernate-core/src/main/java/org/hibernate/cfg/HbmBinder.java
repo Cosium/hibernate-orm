@@ -1237,6 +1237,11 @@ public final class HbmBinder {
 
 	private static void resolveAndBindTypeDef(SimpleValue simpleValue,
 			Mappings mappings, String typeName, Properties parameters) {
+		if ( typeName != null && typeName.startsWith(":") ) {
+			// this is a converter
+			bindConverter(simpleValue, mappings, typeName, parameters);
+			return;
+		}
 		TypeDef typeDef = mappings.getTypeDef( typeName );
 		if ( typeDef != null ) {
 			typeName = typeDef.getTypeClass();
@@ -1264,6 +1269,49 @@ public final class HbmBinder {
 		if ( !parameters.isEmpty() ) simpleValue.setTypeParameters( parameters );
 
 		if ( typeName != null ) simpleValue.setTypeName( typeName );
+	}
+
+	/**
+     * @param simpleValue
+     * @param mappings
+     * @param typeName
+     * @param parameters
+     */
+	private static void bindConverter ( SimpleValue simpleValue, Mappings mappings, String typeName, Properties parameters ) {
+		String converterClass = null;
+		String modelType = null;
+
+		try {
+			converterClass = typeName.substring(1, typeName.indexOf('['));
+		}
+		catch ( IndexOutOfBoundsException e ) {
+			throw new MappingException("illegal converter specification \"" + typeName + "\"");
+		}
+
+		try {
+			modelType = typeName.substring(typeName.indexOf('[') + 1, typeName.indexOf(']'));
+		}
+		catch ( IndexOutOfBoundsException e ) {
+			throw new MappingException("illegal converter specification \"" + typeName + "\"");
+		}
+
+		AttributeConverterDefinition found = null;
+		for ( AttributeConverterDefinition c : mappings.getAttributeConverters() ) {
+			if ( converterClass.equals(c.getAttributeConverter().getClass().getName()) ) {
+				found = c;
+				break;
+			}
+		}
+
+		if ( found == null ) {
+			throw new MappingException("specified converter \"" + converterClass + "\" could not be found");
+		}
+
+		if ( !parameters.isEmpty() )
+			simpleValue.setTypeParameters(parameters);
+		simpleValue.setJpaAttributeConverterDefinition(found);
+		simpleValue.setTypeName(modelType);
+		simpleValue.setupConverter();
 	}
 
 	public static void bindProperty(

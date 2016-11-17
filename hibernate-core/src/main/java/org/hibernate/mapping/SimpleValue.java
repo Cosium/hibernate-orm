@@ -23,13 +23,6 @@
  */
 package org.hibernate.mapping;
 
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-import javax.persistence.AttributeConverter;
-
 import org.hibernate.FetchMode;
 import org.hibernate.MappingException;
 import org.hibernate.annotations.common.reflection.XProperty;
@@ -53,8 +46,14 @@ import org.hibernate.type.descriptor.sql.NationalizedTypeMappings;
 import org.hibernate.type.descriptor.sql.SqlTypeDescriptor;
 import org.hibernate.type.descriptor.sql.SqlTypeDescriptorRegistry;
 import org.hibernate.usertype.DynamicParameterizedType;
-
 import org.jboss.logging.Logger;
+
+import javax.persistence.AttributeConverter;
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * Any value that maps to columns.
@@ -382,6 +381,12 @@ public class SimpleValue implements KeyValue {
 
 		// we had an AttributeConverter...
 		type = buildAttributeConverterTypeAdapter();
+	}
+
+	public void setupConverter () {
+		if ( this.typeName != null && this.attributeConverterDefinition != null ) {
+			type = buildAttributeConverterTypeAdapter();
+		}
 	}
 
 	/**
