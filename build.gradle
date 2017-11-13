@@ -46,19 +46,19 @@ allprojects {
         mavenCentral()
         mavenLocal()
 
-        maven {
+		maven {
             name 'jboss-nexus'
             url "http://repository.jboss.org/nexus/content/groups/public/"
         }
         maven {
             name "jboss-snapshots"
             url "http://snapshots.jboss.org/maven2/"
-        }
+		}
     }
 }
 
 ext {
-	hibernateTargetVersion = '5.2.12.Final'
+	hibernateTargetVersion = '5.2.12.cos-fork.1-SNAPSHOT'
 	expectedGradleVersion = '4.2'
 	baselineJavaVersion = '1.8'
 
@@ -478,7 +478,7 @@ buildScan {
 	licenseAgreementUrl = 'https://gradle.com/terms-of-service'
 	licenseAgree = 'yes'
 
-	recipe 'git-commit', baseUrl: 'https://github.com/hibernate/hibernate-orm/tree'
+	recipe 'git-commit', baseUrl: 'https://github.com/cosium/hibernate-orm/tree'
 }
 
 
