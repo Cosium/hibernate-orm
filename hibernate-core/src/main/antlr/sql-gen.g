@@ -276,6 +276,7 @@ countExpr
 	// Syntacitic predicate resolves star all by itself, avoiding a conflict with STAR in expr.
 	: ROW_STAR { out("*"); }
 	| simpleExpr
+	| selectExpr
 	;
 
 selectAtom

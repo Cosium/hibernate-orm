@@ -1579,4 +1579,11 @@ public class HQLTest extends QueryTranslatorTestCase {
 		compileWithAstQueryTranslator( "from Human where name.first = 'Gavin'", false);
 	}
 
+	@Test
+	public void testCountDistinctOfSubquery(){
+		createNewQueryTranslator(
+				"select count (DISTINCT (SELECT function('lower', 'DAY') from Bar)) from Bar"
+		);
+	}
+
 }
