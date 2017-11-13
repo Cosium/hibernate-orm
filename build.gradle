@@ -444,8 +444,8 @@ subprojects { subProject ->
 
 		repositories {
 			maven {
-				name 'cosium-repo-all'
-				url 'https://repo.cosium.com/repository/all'
+				name 'cosium-repo'
+				url 'https://repo.cosium.com/repository/internal/'
 			}
 		}
 
