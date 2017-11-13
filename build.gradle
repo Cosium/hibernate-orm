@@ -441,6 +441,14 @@ subprojects { subProject ->
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Publishing
 	publishing {
+
+		repositories {
+			maven {
+				name 'cosium-repo-all'
+				url 'https://repo.cosium.com/repository/all'
+			}
+		}
+
 		publications {
 			mavenJava(MavenPublication) {
 				from components.java
@@ -457,6 +465,7 @@ subprojects { subProject ->
 			// to duplicate the testing dependencies.  Well, on second thought, we could centralize the
 			// testing dependencies here within the subprojects block
 		}
+
 	}
 
 	model {
