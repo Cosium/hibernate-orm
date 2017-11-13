@@ -203,11 +203,11 @@ public interface AvailableSettings {
 	/**
 	 * Used to define how the current thread context {@link ClassLoader} must be used
 	 * for class lookup.
-	 * 
+	 *
 	 * @see TcclLookupPrecedence
 	 */
 	String TC_CLASSLOADER = "hibernate.classLoader.tccl_lookup_precedence";
-        
+
 	/**
 	 * Names the {@link ClassLoader} used to load user application classes.
 	 * @since 4.0
@@ -1494,7 +1494,7 @@ public interface AvailableSettings {
 	 * Names the {@link org.hibernate.loader.BatchFetchStyle} to use.  Can specify either the
 	 * {@link org.hibernate.loader.BatchFetchStyle} name (insensitively), or a
 	 * {@link org.hibernate.loader.BatchFetchStyle} instance.
-	 * 
+	 *
 	 * {@code LEGACY} is the default value.
 	 */
 	String BATCH_FETCH_STYLE = "hibernate.batch_fetch_style";
@@ -1710,4 +1710,10 @@ public interface AvailableSettings {
 	 * @see org.hibernate.query.criteria.LiteralHandlingMode
 	 */
 	String CRITERIA_LITERAL_HANDLING_MODE = "hibernate.criteria.literal_handling_mode";
+	/**
+	 * Specifies wheter to raise a runtime exception when the provided first result / max results attributes are ignored.
+	 * i.e: In case of a specified first result / max results with collection fetch.
+	 * Disabled by default. Set to true to enable.
+	 */
+	String RAISE_EXCEPTION_ON_IGNORED_FIRST_RESULT_MAX_RESULTS = "hibernate.query.raise_exception_on_ignored_first_result_max_results";
 }
