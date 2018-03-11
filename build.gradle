@@ -58,7 +58,7 @@ allprojects {
 }
 
 ext {
-	hibernateTargetVersion = '5.2.12.cos-fork.1'
+	hibernateTargetVersion = '5.2.12.cos-fork.2'
 	expectedGradleVersion = '4.2'
 	baselineJavaVersion = '1.8'
 
