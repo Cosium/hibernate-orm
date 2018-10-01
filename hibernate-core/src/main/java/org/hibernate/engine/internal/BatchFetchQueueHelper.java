@@ -58,7 +58,8 @@ public class BatchFetchQueueHelper {
 			// All results should be in the PersistenceContext
 			idSet.remove( session.getContextEntityIdentifier( result ) );
 		}
-		assert idSet.size() == ids.length - results.size();
+		// Backmerge of https://hibernate.atlassian.net/browse/HHH-12835
+		//assert idSet.size() == ids.length - results.size();
 		if ( LOG.isDebugEnabled() ) {
 			LOG.debug( "Entities of type [" + persister.getEntityName() + "] not found; IDs: " + idSet );
 		}
