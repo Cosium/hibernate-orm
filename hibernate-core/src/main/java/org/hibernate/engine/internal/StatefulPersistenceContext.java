@@ -1103,7 +1103,28 @@ public class StatefulPersistenceContext implements PersistenceContext {
 			return Collections.emptyIterator();
 		}
 		else {
-			return entitiesByKey.values().iterator();
+			// Taken from https://github.com/hibernate/hibernate-orm/pull/4287
+			return new Iterator() {
+				private Iterator copiedIterator;
+
+				@Override
+				public boolean hasNext() {
+					assureCopied();
+					return copiedIterator.hasNext();
+				}
+
+				@Override
+				public Object next() {
+					assureCopied();
+					return copiedIterator.next();
+				}
+
+				private void assureCopied() {
+					if (copiedIterator == null) {
+						copiedIterator = new ArrayList(entitiesByKey.values()).iterator();
+					}
+				}
+			};
 		}
 	}
 
