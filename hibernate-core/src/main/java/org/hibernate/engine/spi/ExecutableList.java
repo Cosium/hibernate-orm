@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
 import org.hibernate.action.spi.Executable;
 import org.hibernate.internal.util.collections.CollectionHelper;
 
@@ -279,27 +280,7 @@ public class ExecutableList<E extends Executable & Comparable & Serializable> im
 	 */
 	@Override
 	public Iterator<E> iterator() {
-		return new Iterator<E>() {
-			private Iterator<E> copiedIterator;
-
-			@Override
-			public boolean hasNext() {
-				assureCopied();
-				return copiedIterator.hasNext();
-			}
-
-			@Override
-			public E next() {
-				assureCopied();
-				return copiedIterator.next();
-			}
-
-			private void assureCopied() {
-				if (copiedIterator == null) {
-					copiedIterator = new ArrayList<>(executables).iterator();
-				}
-			}
-		};
+		return Collections.unmodifiableList( executables ).iterator();
 	}
 
 	/**
