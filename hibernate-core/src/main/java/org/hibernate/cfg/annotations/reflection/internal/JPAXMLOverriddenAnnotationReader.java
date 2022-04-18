@@ -179,7 +179,6 @@ import org.hibernate.boot.jaxb.mapping.spi.JaxbSqlResultSetMapping;
 import org.hibernate.boot.jaxb.mapping.spi.JaxbStoredProcedureParameter;
 import org.hibernate.boot.jaxb.mapping.spi.JaxbTable;
 import org.hibernate.boot.jaxb.mapping.spi.JaxbTableGenerator;
-import org.hibernate.boot.jaxb.mapping.spi.JaxbTransient;
 import org.hibernate.boot.jaxb.mapping.spi.JaxbUniqueConstraint;
 import org.hibernate.boot.jaxb.mapping.spi.JaxbVersion;
 import org.hibernate.boot.jaxb.mapping.spi.LifecycleCallbackContainer;
@@ -188,6 +187,7 @@ import org.hibernate.boot.registry.classloading.spi.ClassLoadingException;
 import org.hibernate.boot.spi.BootstrapContext;
 import org.hibernate.boot.spi.ClassLoaderAccess;
 import org.hibernate.cfg.annotations.reflection.PersistentAttributeFilter;
+import org.hibernate.cfg.annotations.reflection.XMLContext;
 import org.hibernate.internal.CoreLogging;
 import org.hibernate.internal.CoreMessageLogger;
 import org.hibernate.internal.util.StringHelper;
@@ -313,7 +313,7 @@ public class JPAXMLOverriddenAnnotationReader implements AnnotationReader {
 	private transient PropertyMappingElementCollector elementsForProperty;
 	private AccessibleObject mirroredAttribute;
 
-	JPAXMLOverriddenAnnotationReader(
+	public JPAXMLOverriddenAnnotationReader(
 			AnnotatedElement el,
 			XMLContext xmlContext,
 			ClassLoaderAccess classLoaderAccess) {

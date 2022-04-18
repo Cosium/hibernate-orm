@@ -4,7 +4,7 @@
  * License: GNU Lesser General Public License (LGPL), version 2.1 or later.
  * See the lgpl.txt file in the root directory or <http://www.gnu.org/licenses/lgpl-2.1.html>.
  */
-package org.hibernate.cfg.annotations.reflection.internal;
+package org.hibernate.cfg.annotations.reflection;
 
 import java.lang.reflect.AnnotatedElement;
 import java.util.ArrayList;
@@ -29,6 +29,8 @@ import org.hibernate.boot.jaxb.mapping.spi.JaxbTableGenerator;
 import org.hibernate.boot.registry.classloading.spi.ClassLoadingException;
 import org.hibernate.boot.spi.BootstrapContext;
 import org.hibernate.boot.spi.ClassLoaderAccess;
+import org.hibernate.cfg.annotations.reflection.XMLContext;
+import org.hibernate.cfg.annotations.reflection.internal.JPAXMLOverriddenAnnotationReader;
 
 /**
  * MetadataProvider aware of the JPA Deployment descriptor (orm.xml, ...).
@@ -36,7 +38,7 @@ import org.hibernate.boot.spi.ClassLoaderAccess;
  * @author Emmanuel Bernard
  */
 @SuppressWarnings("unchecked")
-public final class JPAXMLOverriddenMetadataProvider implements MetadataProvider {
+public class JPAXMLOverriddenMetadataProvider implements MetadataProvider {
 
 	private static final MetadataProvider STATELESS_BASE_DELEGATE = new JavaMetadataProvider();
 

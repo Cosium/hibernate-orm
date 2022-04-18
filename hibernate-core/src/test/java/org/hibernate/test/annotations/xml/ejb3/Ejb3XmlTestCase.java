@@ -12,7 +12,7 @@ import java.lang.reflect.AnnotatedElement;
 
 import org.hibernate.boot.jaxb.mapping.spi.JaxbEntityMappings;
 import org.hibernate.cfg.annotations.reflection.internal.JPAXMLOverriddenAnnotationReader;
-import org.hibernate.cfg.annotations.reflection.internal.XMLContext;
+import org.hibernate.cfg.annotations.reflection.XMLContext;
 import org.hibernate.internal.util.xml.XMLMappingHelper;
 
 import org.hibernate.testing.boot.BootstrapContextImpl;
