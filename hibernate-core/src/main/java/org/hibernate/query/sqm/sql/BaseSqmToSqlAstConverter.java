@@ -6941,7 +6941,9 @@ public abstract class BaseSqmToSqlAstConverter<T extends Statement> extends Base
 					);
 
 					fetchTiming = traversalResult.getFetchTiming();
-					joined = traversalResult.isJoined();
+					if (traversalResult.getJoined() != null) {
+						joined = traversalResult.getJoined();
+					}
 					if ( shouldExplicitFetch( maxDepth, fetchable ) ) {
 						explicitFetch = true;
 					}

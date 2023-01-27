@@ -31,7 +31,6 @@ import org.hibernate.graph.GraphSemantic;
 import org.hibernate.graph.spi.RootGraphImplementor;
 import org.hibernate.loader.ast.spi.Loadable;
 import org.hibernate.loader.ast.spi.Loader;
-import org.hibernate.metamodel.mapping.AttributeMapping;
 import org.hibernate.metamodel.mapping.BasicValuedModelPart;
 import org.hibernate.metamodel.mapping.CollectionPart;
 import org.hibernate.metamodel.mapping.EntityIdentifierMapping;
@@ -746,7 +745,9 @@ public class LoaderSelectBuilder {
 				if ( entityGraphTraversalState != null ) {
 					traversalResult = entityGraphTraversalState.traverse( fetchParent, fetchable, isKeyFetchable );
 					fetchTiming = traversalResult.getFetchTiming();
-					joined = traversalResult.isJoined();
+					if (traversalResult.getJoined() != null) {
+						joined = traversalResult.getJoined();
+					}
 					explicitFetch = shouldExplicitFetch( maximumFetchDepth, fetchable, creationState );
 				}
 				else if ( loadQueryInfluencers.hasEnabledFetchProfiles() ) {
