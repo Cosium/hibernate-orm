@@ -91,7 +91,7 @@ public class ConcreteSqmSelectQueryPlan<R> implements SelectQueryPlan<R> {
 		this.rowTransformer = determineRowTransformer( sqm, resultType, tupleMetadata, queryOptions );
 
 		final ListResultsConsumer.UniqueSemantic uniqueSemantic;
-		if ( sqm.producesUniqueResults() && !containsCollectionFetches( queryOptions ) ) {
+		if ( sqm.producesUniqueResults() && !AppliedGraphs.containsCollectionFetches( queryOptions ) ) {
 			uniqueSemantic = ListResultsConsumer.UniqueSemantic.NONE;
 		}
 		else {
@@ -177,25 +177,6 @@ public class ConcreteSqmSelectQueryPlan<R> implements SelectQueryPlan<R> {
 		//		particular, should veto caching of the plan.  The expansion happens
 		//		for each execution - see creation of `JdbcParameterBindings` in
 		//		`#performList` and `#performScroll`.
-	}
-
-	private static boolean containsCollectionFetches(QueryOptions queryOptions) {
-		final AppliedGraph appliedGraph = queryOptions.getAppliedGraph();
-		return appliedGraph != null && appliedGraph.getGraph() != null && containsCollectionFetches( appliedGraph.getGraph() );
-	}
-
-	private static boolean containsCollectionFetches(GraphImplementor<?> graph) {
-		for ( AttributeNodeImplementor<?> attributeNodeImplementor : graph.getAttributeNodeImplementors() ) {
-			if ( attributeNodeImplementor.getAttributeDescriptor().isCollection() ) {
-				return true;
-			}
-			for ( SubGraphImplementor<?> subGraph : attributeNodeImplementor.getSubGraphMap().values() ) {
-				if ( containsCollectionFetches( subGraph ) ) {
-					return true;
-				}
-			}
-		}
-		return false;
 	}
 
 	@SuppressWarnings("unchecked")
