@@ -9,6 +9,7 @@ package org.hibernate.sql.results.graph;
 import org.hibernate.Incubating;
 import org.hibernate.engine.FetchTiming;
 import org.hibernate.graph.AttributeNode;
+import org.hibernate.graph.spi.AttributeNodeImplementor;
 import org.hibernate.graph.spi.GraphImplementor;
 
 /**
@@ -26,9 +27,9 @@ public interface EntityGraphTraversalState {
 	class TraversalResult {
 		private final GraphImplementor<?> previousContext;
 		private final FetchTiming fetchTiming;
-		private final Boolean joined;
+		private final boolean joined;
 
-		public TraversalResult(GraphImplementor<?> previousContext, FetchTiming fetchTiming, Boolean joined) {
+		public TraversalResult(GraphImplementor<?> previousContext, FetchTiming fetchTiming, boolean joined) {
 			this.previousContext = previousContext;
 			this.fetchTiming = fetchTiming;
 			this.joined = joined;
@@ -42,7 +43,7 @@ public interface EntityGraphTraversalState {
 			return fetchTiming;
 		}
 
-		public Boolean getJoined() {
+		public boolean isJoined() {
 			return joined;
 		}
 	}
