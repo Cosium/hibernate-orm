@@ -92,9 +92,7 @@ public class StandardEntityGraphTraversalStateImpl implements EntityGraphTravers
 			}
 			else {
 				fetchTiming = fetchable.getMappedFetchOptions().getTiming();
-				if (!(fetchable instanceof PluralAttributeMapping)) {
-					joined = fetchable.getMappedFetchOptions().getStyle() == FetchStyle.JOIN;
-				}
+				joined = fetchable.getMappedFetchOptions().getStyle() == FetchStyle.JOIN;
 			}
 		}
 		return new TraversalResult( previousContextRoot, fetchTiming, joined );
