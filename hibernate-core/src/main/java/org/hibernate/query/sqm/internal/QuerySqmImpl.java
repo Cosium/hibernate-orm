@@ -508,7 +508,7 @@ public class QuerySqmImpl<R>
 		getSession().prepareForQueryExecution( requiresTxn( getQueryOptions().getLockOptions().findGreatestLockMode() ) );
 
 		final SqmSelectStatement<?> sqmStatement = (SqmSelectStatement<?>) getSqmStatement();
-		final boolean containsCollectionFetches = sqmStatement.containsCollectionFetches();
+		final boolean containsCollectionFetches = sqmStatement.containsCollectionFetches() || AppliedGraphs.containsCollectionFetches(getQueryOptions());
 		final boolean hasLimit = hasLimit( sqmStatement, getQueryOptions() );
 		final boolean needsDistinct = containsCollectionFetches
 				&& ( sqmStatement.usesDistinct() || hasAppliedGraph( getQueryOptions() ) || hasLimit );
@@ -585,6 +585,9 @@ public class QuerySqmImpl<R>
 				}
 				else {
 					toIndex = resultSize;
+				}
+				if (first > resultSize) {
+					return new ArrayList<>(0);
 				}
 				return list.subList( first, toIndex > resultSize ? resultSize : toIndex );
 			}
