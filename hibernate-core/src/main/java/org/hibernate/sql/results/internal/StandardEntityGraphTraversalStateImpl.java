@@ -55,7 +55,7 @@ public class StandardEntityGraphTraversalStateImpl implements EntityGraphTravers
 
 		currentGraphContext = null;
 		FetchTiming fetchTiming = null;
-		Boolean joined = null;
+		Boolean joined = false;
 
 		if ( attributeNode != null ) {
 			fetchTiming = FetchTiming.IMMEDIATE;
