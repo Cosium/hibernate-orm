@@ -745,12 +745,9 @@ public class LoaderSelectBuilder {
 				// 'entity graph' takes precedence over 'fetch profile'
 				if ( entityGraphTraversalState != null ) {
 					traversalResult = entityGraphTraversalState.traverse( fetchParent, fetchable, isKeyFetchable );
-					EntityGraphTraversalState.FetchStrategy fetchStrategy = traversalResult.getFetchStrategy();
-					if (fetchStrategy != null) {
-						fetchTiming = fetchStrategy.getFetchTiming();
-						joined = fetchStrategy.isJoined();
-						explicitFetch = shouldExplicitFetch( maximumFetchDepth, fetchable, creationState );
-					}
+					fetchTiming = traversalResult.getFetchTiming();
+					joined = traversalResult.isJoined();
+					explicitFetch = shouldExplicitFetch( maximumFetchDepth, fetchable, creationState );
 				}
 				else if ( loadQueryInfluencers.hasEnabledFetchProfiles() ) {
 					// There is no point in checking the fetch profile if it can't affect this fetchable

@@ -236,7 +236,8 @@ public class LoadAndFetchGraphTest extends BaseEntityManagerFunctionalTestCase {
 					// depending on the mapping.
 					assertTrue( Hibernate.isInitialized( cEntity.getEagerC() ) );
 
-					assertEquals( 2L, statistics.getPrepareStatementCount() );
+					// 1 because contrary to 5.x we fetch the eager C along with the main query
+					assertEquals( 1L, statistics.getPrepareStatementCount() );
 				} );
 	}
 
@@ -339,7 +340,8 @@ public class LoadAndFetchGraphTest extends BaseEntityManagerFunctionalTestCase {
 				assertTrue( Hibernate.isInitialized( cEntity.getEagerC() ) );
 			}
 
-			assertEquals( 3L, statistics.getPrepareStatementCount() );
+			// 1 because contrary to 5.x we fetch the eager C along with the main query
+			assertEquals( 1L, statistics.getPrepareStatementCount() );
 		} );
 	}
 

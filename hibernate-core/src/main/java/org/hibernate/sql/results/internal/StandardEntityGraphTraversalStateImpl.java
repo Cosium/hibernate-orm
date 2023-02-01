@@ -54,11 +54,12 @@ public class StandardEntityGraphTraversalStateImpl implements EntityGraphTravers
 		}
 
 		currentGraphContext = null;
-		FetchStrategy fetchStrategy = null;
+		FetchTiming fetchTiming = null;
+		boolean joined = false;
 
 		if ( attributeNode != null ) {
-
-			fetchStrategy = new FetchStrategy(FetchTiming.IMMEDIATE, true);
+			fetchTiming = FetchTiming.IMMEDIATE;
+			joined = true;
 
 			final Map<Class<?>, SubGraphImplementor> subgraphMap;
 			final Class<?> subgraphMapKey;
@@ -84,10 +85,17 @@ public class StandardEntityGraphTraversalStateImpl implements EntityGraphTravers
 				currentGraphContext = subgraphMap.get( subgraphMapKey );
 			}
 		}
-		if ( fetchStrategy == null && graphSemantic == GraphSemantic.FETCH ) {
-			fetchStrategy = new FetchStrategy(FetchTiming.DELAYED, false);
+		if ( fetchTiming == null ) {
+			if ( graphSemantic == GraphSemantic.FETCH ) {
+				fetchTiming = FetchTiming.DELAYED;
+				joined = false;
+			}
+			else {
+				fetchTiming = fetchable.getMappedFetchOptions().getTiming();
+				joined = fetchable.getMappedFetchOptions().getStyle() == FetchStyle.JOIN;
+			}
 		}
-		return new TraversalResult( previousContextRoot, fetchStrategy );
+		return new TraversalResult( previousContextRoot, fetchTiming, joined );
 	}
 
 	private Class<?> getEntityCollectionPartJavaClass(CollectionPart collectionPart) {
