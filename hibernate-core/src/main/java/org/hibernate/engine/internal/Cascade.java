@@ -11,7 +11,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 import org.hibernate.HibernateException;
 import org.hibernate.bytecode.enhance.spi.interceptor.LazyAttributeLoadingInterceptor;
@@ -178,13 +177,13 @@ public final class Cascade {
 					}
 					// If the property is uninitialized, then there cannot be any orphans.
 					if ( action.deleteOrphans() && !isUninitializedProperty ) {
-						AtomicInteger index = new AtomicInteger(i);
+						final int index = i;
 						cascadeLogicalOneToOneOrphanRemoval(
 								action,
 								eventSource,
 								null,
 								parent,
-								() -> persister.getValue( parent, index.get() ),
+								() -> persister.getValue( parent, index ),
 								type,
 								style,
 								propertyName,
