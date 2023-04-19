@@ -11,6 +11,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
 import org.hibernate.HibernateException;
 import org.hibernate.bytecode.enhance.spi.interceptor.LazyAttributeLoadingInterceptor;
 import org.hibernate.collection.spi.PersistentCollection;
@@ -176,12 +178,13 @@ public final class Cascade {
 					}
 					// If the property is uninitialized, then there cannot be any orphans.
 					if ( action.deleteOrphans() && !isUninitializedProperty ) {
+						AtomicInteger index = new AtomicInteger(i);
 						cascadeLogicalOneToOneOrphanRemoval(
 								action,
 								eventSource,
 								null,
 								parent,
-								persister.getValue( parent, i ),
+								() -> persister.getValue( parent, index.get() ),
 								type,
 								style,
 								propertyName,
@@ -259,7 +262,7 @@ public final class Cascade {
 				eventSource,
 				componentPath,
 				parent,
-				child,
+				() -> child,
 				type,
 				style,
 				propertyName,
@@ -271,7 +274,7 @@ public final class Cascade {
 			final EventSource eventSource,
 			final List<String> componentPath,
 			final Object parent,
-			final Object child,
+			final Supplier<Object> childSupplier,
 			final Type type,
 			final CascadeStyle style,
 			final String propertyName,
@@ -319,6 +322,7 @@ public final class Cascade {
 
 					// orphaned if the association was nulled (child == null) or receives a new value while the
 					// entity is managed (without first nulling and manually flushing).
+					Object child = childSupplier.get();
 					if ( child == null || ( loadedValue != null && child != loadedValue ) ) {
 						EntityEntry valueEntry = persistenceContext.getEntry( loadedValue );
 
