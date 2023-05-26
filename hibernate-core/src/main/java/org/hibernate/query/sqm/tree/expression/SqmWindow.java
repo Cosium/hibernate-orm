@@ -171,11 +171,11 @@ public class SqmWindow extends AbstractSqmNode implements JpaWindow, SqmVisitabl
 		}
 		final List<SqmExpression<?>> partitionsCopy = new ArrayList<>( this.partitions.size() );
 		for ( SqmExpression<?> partition : this.partitions ) {
-			partitions.add( partition.copy( context ) );
+			partitionsCopy.add( partition.copy( context ) );
 		}
 		final List<SqmSortSpecification> orderListCopy = new ArrayList<>( this.orderList.size() );
 		for ( SqmSortSpecification sortSpecification : this.orderList ) {
-			orderList.add( sortSpecification.copy( context ) );
+			orderListCopy.add( sortSpecification.copy( context ) );
 		}
 		return context.registerCopy(
 				this,
