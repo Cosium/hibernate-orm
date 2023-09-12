@@ -58,7 +58,7 @@ public class SqmEmbeddedValuedSimplePath<T>
 				this,
 				new SqmEmbeddedValuedSimplePath<>(
 						getNavigablePathCopy( lhsCopy ),
-						getModel(),
+						getReferencedPathSource(),
 						lhsCopy,
 						getExplicitAlias(),
 						nodeBuilder()
