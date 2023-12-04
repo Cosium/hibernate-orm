@@ -55,10 +55,12 @@ task release {
 	}
 }
 
-task publish {
-	description = "The task performed when we want to just publish maven artifacts.  Relies on " +
-			"the fact that subprojects will appropriately define a release task " +
-			"themselves if they have any publish-related activities to perform"
+if (!tasks.findByName( "publish" )) {
+	task publish {
+		description = "The task performed when we want to just publish maven artifacts.  Relies on " +
+				"the fact that subprojects will appropriately define a release task " +
+				"themselves if they have any publish-related activities to perform"
+	}
 }
 
 ext {
