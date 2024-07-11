@@ -45,6 +45,7 @@ import jakarta.persistence.ParameterMode;
 
 /**
  * @author Steve Ebersole
+ * @author Réda Housni Alaoui
  */
 public class OutputsImpl implements Outputs {
 	private static final Logger log = CoreLogging.logger( OutputsImpl.class );
@@ -234,6 +235,7 @@ public class OutputsImpl implements Outputs {
 				results.add( rowReader.readRow( rowProcessingState, processingOptions ) );
 				rowProcessingState.finishRowProcessing();
 			}
+			jdbcValues.finishSuccessfulProcessing( this.context.getSession() );
 			if ( resultSetMapping.getNumberOfResultBuilders() == 0
 					&& procedureCall.isFunctionCall()
 					&& procedureCall.getFunctionReturn().getJdbcTypeCode() == Types.REF_CURSOR

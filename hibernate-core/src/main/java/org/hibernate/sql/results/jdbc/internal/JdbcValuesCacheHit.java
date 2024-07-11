@@ -19,6 +19,7 @@ import org.hibernate.sql.results.jdbc.spi.RowProcessingState;
  * An {@link AbstractJdbcValues} implementation for cases where we had a cache hit.
  *
  * @author Steve Ebersole
+ * @author Réda Housni Alaoui
  */
 public class JdbcValuesCacheHit extends AbstractJdbcValues {
 	private static final Object[][] NO_DATA = new Object[0][];
@@ -240,6 +241,11 @@ public class JdbcValuesCacheHit extends AbstractJdbcValues {
 
 	@Override
 	public void finishRowProcessing(RowProcessingState rowProcessingState) {
+	}
+
+	@Override
+	public void finishSuccessfulProcessing(SharedSessionContractImplementor session) {
+		// No-op
 	}
 
 	@Override

@@ -30,6 +30,7 @@ import org.hibernate.sql.results.jdbc.spi.RowProcessingState;
  * {@link AbstractJdbcValues} implementation for a JDBC {@link ResultSet} as the source
  *
  * @author Steve Ebersole
+ * @author Réda Housni Alaoui
  */
 public class JdbcValuesResultSetImpl extends AbstractJdbcValues {
 
@@ -273,8 +274,12 @@ public class JdbcValuesResultSetImpl extends AbstractJdbcValues {
 	}
 
 	@Override
-	public final void finishUp(SharedSessionContractImplementor session) {
+	public void finishSuccessfulProcessing(SharedSessionContractImplementor session) {
 		queryCachePutManager.finishUp( session );
+	}
+
+	@Override
+	public final void finishUp(SharedSessionContractImplementor session) {
 		resultSetAccess.release();
 	}
 
