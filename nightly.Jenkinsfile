@@ -137,8 +137,8 @@ stage('Build') {
 									state[buildEnv.tag]['containerName'] = "edb"
 									break;
 								case "db2_10_5":
-									docker.withRegistry('https://index.docker.io/v1/', 'hibernateci.hub.docker.com') {
-										docker.image('ibmoms/db2express-c@sha256:a499afd9709a1f69fb41703e88def9869955234c3525547e2efc3418d1f4ca2b').pull()
+									docker.withRegistry('https://quay.io', 'hibernate.quay.io') {
+										docker.image('hibernate/db2express-c@sha256:a499afd9709a1f69fb41703e88def9869955234c3525547e2efc3418d1f4ca2b').pull()
 									}
 									sh "./docker_db.sh db2_10_5"
 									state[buildEnv.tag]['containerName'] = "db2"

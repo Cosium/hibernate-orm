@@ -13,6 +13,7 @@ import org.hibernate.persister.entity.DiscriminatorMetadata;
 import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.persister.entity.Queryable;
 import org.hibernate.tuple.entity.EntityMetamodel;
+import org.hibernate.type.BasicType;
 import org.hibernate.type.Type;
 
 import java.io.Serializable;
@@ -23,8 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-
-import static org.hibernate.processor.validation.MockSessionFactory.typeConfiguration;
 
 /**
  * @author Gavin King
@@ -117,17 +116,35 @@ public abstract class MockEntityPersister implements EntityPersister, Queryable,
 
 	abstract Type createPropertyType(String propertyPath);
 
-	@Override
-	public Type getIdentifierType() {
-		//TODO: propertyType(getIdentifierPropertyName())
-		return typeConfiguration.getBasicTypeForJavaType(Long.class);
-	}
-
+	/**
+	 * Override on subclasses!
+	 */
 	@Override
 	public String getIdentifierPropertyName() {
-		//TODO: return the correct @Id property name
-		return "id";
+		return getRootEntityPersister().identifierPropertyName();
 	}
+
+	protected abstract String identifierPropertyName();
+
+	/**
+	 * Override on subclasses!
+	 */
+	@Override
+	public Type getIdentifierType() {
+		return getRootEntityPersister().identifierType();
+	}
+
+	protected abstract Type identifierType();
+
+	/**
+	 * Override on subclasses!
+	 */
+	@Override
+	public BasicType<?> getVersionType() {
+		return getRootEntityPersister().versionType();
+	}
+
+	protected abstract BasicType<?> versionType();
 
 	@Override
 	public Type toType(String propertyName) throws QueryException {
@@ -141,13 +158,10 @@ public abstract class MockEntityPersister implements EntityPersister, Queryable,
 	}
 
 	@Override
-	public String getRootEntityName() {
-		for (MockEntityPersister persister : factory.getMockEntityPersisters()) {
-			if (this != persister && persister.isSubclassPersister(this)) {
-				return persister.getRootEntityName();
-			}
-		}
-		return entityName;
+	public abstract String getRootEntityName();
+
+	public MockEntityPersister getRootEntityPersister() {
+		return factory.createMockEntityPersister(getRootEntityName());
 	}
 
 	@Override
@@ -204,7 +218,7 @@ public abstract class MockEntityPersister implements EntityPersister, Queryable,
 
 	@Override
 	public Type getResolutionType() {
-		return typeConfiguration.getBasicTypeForJavaType(Class.class);
+		return factory.getTypeConfiguration().getBasicTypeForJavaType(Class.class);
 	}
 
 	@Override
@@ -219,7 +233,12 @@ public abstract class MockEntityPersister implements EntityPersister, Queryable,
 
 	@Override
 	public int getVersionProperty() {
-		return -66;
+		return 0;
+	}
+
+	@Override
+	public boolean isVersioned() {
+		return true;
 	}
 
 	@Override
@@ -234,6 +253,6 @@ public abstract class MockEntityPersister implements EntityPersister, Queryable,
 
 	@Override
 	public Type getDiscriminatorType() {
-		return typeConfiguration.getBasicTypeForJavaType(String.class);
+		return factory.getTypeConfiguration().getBasicTypeForJavaType(String.class);
 	}
 }

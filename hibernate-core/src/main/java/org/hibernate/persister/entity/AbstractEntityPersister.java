@@ -296,6 +296,7 @@ import org.hibernate.type.CollectionType;
 import org.hibernate.type.ComponentType;
 import org.hibernate.type.CompositeType;
 import org.hibernate.type.EntityType;
+import org.hibernate.type.ManyToOneType;
 import org.hibernate.type.Type;
 import org.hibernate.type.descriptor.java.JavaType;
 import org.hibernate.type.descriptor.java.MutabilityPlan;
@@ -496,7 +497,7 @@ public abstract class AbstractEntityPersister
 	private final boolean implementsLifecycle;
 
 	private List<UniqueKeyEntry> uniqueKeyEntries = null; //lazily initialized
-	private HashMap<String,SingleIdArrayLoadPlan> nonLazyPropertyLoadPlansByName;
+	private ConcurrentHashMap<String,SingleIdArrayLoadPlan> nonLazyPropertyLoadPlansByName;
 
 	@Deprecated(since = "6.0")
 	public AbstractEntityPersister(
@@ -1301,6 +1302,17 @@ public abstract class AbstractEntityPersister
 						uniqueKeys.add( new UniqueKeyEntry( ukName, index, type ) );
 					}
 				}
+				else if ( associationType instanceof ManyToOneType ) {
+					final ManyToOneType manyToOneType = ( (ManyToOneType) associationType );
+					if ( manyToOneType.isLogicalOneToOne() && manyToOneType.isReferenceToPrimaryKey() ) {
+						final AttributeMapping attributeMapping = aep.findAttributeMapping( manyToOneType.getPropertyName() );
+						if ( attributeMapping != null ) {
+							final int index = attributeMapping.getStateArrayPosition();
+							final Type type = aep.getPropertyTypes()[index];
+							uniqueKeys.add( new UniqueKeyEntry( manyToOneType.getPropertyName(), index, type ) );
+						}
+					}
+				}
 			}
 		}
 		return CollectionHelper.toSmallList( uniqueKeys );
@@ -1671,17 +1683,17 @@ public abstract class AbstractEntityPersister
 			int propertyIndex = getPropertyIndex( fieldName );
 			partsToSelect.add( getAttributeMapping( propertyIndex ) );
 			SingleIdArrayLoadPlan lazyLoanPlan;
-			if ( nonLazyPropertyLoadPlansByName == null ) {
-				nonLazyPropertyLoadPlansByName = new HashMap<>();
+			ConcurrentHashMap<String, SingleIdArrayLoadPlan> propertyLoadPlansByName = this.nonLazyPropertyLoadPlansByName;
+			if ( propertyLoadPlansByName == null ) {
+				propertyLoadPlansByName = new ConcurrentHashMap<>();
 				lazyLoanPlan = createLazyLoanPlan( partsToSelect );
-				;
-				nonLazyPropertyLoadPlansByName.put( fieldName, lazyLoanPlan );
+				propertyLoadPlansByName.put( fieldName, lazyLoanPlan );
+				this.nonLazyPropertyLoadPlansByName = propertyLoadPlansByName;
 			}
 			else {
 				lazyLoanPlan = nonLazyPropertyLoadPlansByName.get( fieldName );
 				if ( lazyLoanPlan == null ) {
 					lazyLoanPlan = createLazyLoanPlan( partsToSelect );
-					;
 					nonLazyPropertyLoadPlansByName.put( fieldName, lazyLoanPlan );
 				}
 			}
