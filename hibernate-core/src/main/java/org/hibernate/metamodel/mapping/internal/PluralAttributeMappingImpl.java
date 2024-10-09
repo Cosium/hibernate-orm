@@ -950,7 +950,7 @@ public class PluralAttributeMappingImpl
 					tableGroup,
 					null,
 					sqlAliasBase,
-					joinType,
+					SqlAstJoinType.INNER,
 					fetched,
 					false,
 					creationState
