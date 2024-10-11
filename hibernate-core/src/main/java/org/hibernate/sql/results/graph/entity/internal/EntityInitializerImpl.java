@@ -565,7 +565,8 @@ public class EntityInitializerImpl extends AbstractInitializer<EntityInitializer
 		}
 
 		if ( oldEntityKey != null && previousRowReuse && oldEntityInstance != null
-				&& areKeysEqual( oldEntityKey.getIdentifier(), id ) ) {
+				&& areKeysEqual( oldEntityKey.getIdentifier(), id ) && rowProcessingState.getSession()
+				.getPersistenceContextInternal().isEntryFor( oldEntityInstance ) ) {
 			data.setState( State.INITIALIZED );
 			data.entityKey = oldEntityKey;
 			data.setInstance( oldEntityInstance );
@@ -575,7 +576,6 @@ public class EntityInitializerImpl extends AbstractInitializer<EntityInitializer
 			if ( !entityKeyOnly ) {
 				notifySubInitializersToReusePreviousRowInstance( data );
 			}
-			return;
 		}
 		resolveEntityKey( data, id );
 		if ( !entityKeyOnly ) {
