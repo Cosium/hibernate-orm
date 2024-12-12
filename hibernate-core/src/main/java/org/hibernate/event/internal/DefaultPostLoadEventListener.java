@@ -48,7 +48,7 @@ public class DefaultPostLoadEventListener implements PostLoadEventListener, Call
 		final EventSource session = event.getSession();
 		final EntityEntry entry = session.getPersistenceContextInternal().getEntry( entity );
 		if ( entry == null ) {
-			throw new AssertionFailure( "possible non-threadsafe access to the session" );
+			throw new AssertionFailure( "possible non-threadsafe access to the session. Looked up entity was " + entity + ". PostLoadEvent#id was <" + event.getId() + ">. Session content was " + session.getPersistenceContextInternal().getEntitiesByKey() + "." );
 		}
 
 		final LockMode lockMode = entry.getLockMode();
