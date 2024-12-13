@@ -14,6 +14,7 @@ import org.hibernate.action.internal.EntityIncrementVersionProcess;
 import org.hibernate.action.internal.EntityVerifyVersionProcess;
 import org.hibernate.classic.Lifecycle;
 import org.hibernate.engine.spi.EntityEntry;
+import org.hibernate.engine.spi.PersistenceContext;
 import org.hibernate.event.spi.EventSource;
 import org.hibernate.event.spi.PostLoadEvent;
 import org.hibernate.event.spi.PostLoadEventListener;
@@ -48,7 +49,8 @@ public class DefaultPostLoadEventListener implements PostLoadEventListener, Call
 		final EventSource session = event.getSession();
 		final EntityEntry entry = session.getPersistenceContextInternal().getEntry( entity );
 		if ( entry == null ) {
-			throw new AssertionFailure( "possible non-threadsafe access to the session. Looked up entity was " + entity + ". PostLoadEvent#id was <" + event.getId() + ">. Session content was " + session.getPersistenceContextInternal().getEntitiesByKey() + "." );
+			PersistenceContext persistenceContext = session.getPersistenceContextInternal();
+			throw new AssertionFailure( "possible non-threadsafe access to the session. Looked up entity was " + entity + ". PostLoadEvent#id was <" + event.getId() + ">. Reason was <" + persistenceContext.explainWhyEntryIsMissing( entity ) + ">. Session content was " + persistenceContext.getEntitiesByKey() + ".");
 		}
 
 		final LockMode lockMode = entry.getLockMode();

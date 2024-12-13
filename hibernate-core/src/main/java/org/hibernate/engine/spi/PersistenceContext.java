@@ -48,6 +48,10 @@ public interface PersistenceContext {
 	 */
 	Object NO_ROW = new MarkerObject( "NO_ROW" );
 
+	default String explainWhyEntryIsMissing(Object entity) {
+		return "No explanation";
+	}
+
 	boolean isStateless();
 
 	/**

@@ -236,6 +236,45 @@ public class EntityEntryContext {
 				: managedEntity.$$_hibernate_getEntityEntry();
 	}
 
+	public String explainWhyEntityEntryIsMissing(Object entity) {
+		if ( isManagedEntity( entity ) ) {
+			final ManagedEntity managedEntity = asManagedEntity( entity );
+			if ( managedEntity.$$_hibernate_getEntityEntry() == null ) {
+				// it is not associated
+				return "managedEntity.$$_hibernate_getEntityEntry() returned null. managedEntity was " + managedEntity + ".";
+			}
+			final AbstractEntityEntry entityEntry = (AbstractEntityEntry) managedEntity.$$_hibernate_getEntityEntry();
+
+			if ( entityEntry.getPersister().isMutable() ) {
+				if (entityEntry.getPersistenceContext() != persistenceContext) {
+					return entityEntry + " is associated with " + entityEntry.getPersistenceContext() + " instead of " + persistenceContext;
+				} else {
+					return "No problemo: " + managedEntity + " is associated with the current persistence context.";
+				}
+			}
+			else {
+				if (immutableManagedEntityXref == null) {
+					return "immutableManagedEntityXref is null.";
+				}
+				if (immutableManagedEntityXref.get( managedEntity ) == null) {
+					return "immutableManagedEntityXref.get( managedEntity ) returned null. immutableManagedEntityXref was " + immutableManagedEntityXref + ". managedEntity was " + managedEntity + ".";
+				} else {
+					return "No problemo: " + managedEntity + " found in " + immutableManagedEntityXref + ".";
+				}
+			}
+		}
+		else {
+			if (nonEnhancedEntityXref == null) {
+				return "nonEnhancedEntityXref is null";
+			}
+			if (nonEnhancedEntityXref.get( entity ) == null) {
+				return "nonEnhancedEntityXref.get( entity ) returned null. nonEnhancedEntityXref was " + nonEnhancedEntityXref + ". entity was " + entity + ".";
+			} else {
+				return "No problemo: found " + entity + " in " + nonEnhancedEntityXref + ".";
+			}
+		}
+	}
+
 	/**
 	 * Remove an entity from the context, returning the EntityEntry which was associated with it
 	 *

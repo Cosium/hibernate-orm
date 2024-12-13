@@ -594,6 +594,11 @@ public class StatefulPersistenceContext implements PersistenceContext {
 	}
 
 	@Override
+	public String explainWhyEntryIsMissing(Object entity) {
+		return entityEntryContext.explainWhyEntityEntryIsMissing(entity);
+	}
+
+	@Override
 	public EntityEntry removeEntry(Object entity) {
 		return entityEntryContext.removeEntityEntry( entity );
 	}
